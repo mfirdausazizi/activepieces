@@ -76,6 +76,7 @@ import { projectHooks } from './project/project-hooks'
 import { projectModule } from './project/project-module'
 import { externalProjectModule } from './project/external-project-module'
 import { ceApiKeyModule } from './project/ce-api-key-module'
+import { ceSessionTokenModule } from './authentication/ce-session-token-module'
 import { storeEntryModule } from './store-entry/store-entry.module'
 import { tablesModule } from './tables/tables.module'
 import { templateModule } from './template/template.module'
@@ -324,9 +325,10 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
             await app.register(projectModule)
             await app.register(communityPiecesModule)
             await app.register(queueMetricsModule)
-            // OruCRM: Add external project management and API key support
+            // OruCRM: Add external project management, API key, and session token support
             await app.register(externalProjectModule)
             await app.register(ceApiKeyModule)
+            await app.register(ceSessionTokenModule)
             break
     }
 
