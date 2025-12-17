@@ -74,6 +74,8 @@ import { tagsModule } from './pieces/tags/tags-module'
 import { platformModule } from './platform/platform.module'
 import { projectHooks } from './project/project-hooks'
 import { projectModule } from './project/project-module'
+import { externalProjectModule } from './project/external-project-module'
+import { ceApiKeyModule } from './project/ce-api-key-module'
 import { storeEntryModule } from './store-entry/store-entry.module'
 import { tablesModule } from './tables/tables.module'
 import { templateModule } from './template/template.module'
@@ -322,6 +324,9 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
             await app.register(projectModule)
             await app.register(communityPiecesModule)
             await app.register(queueMetricsModule)
+            // OruCRM: Add external project management and API key support
+            await app.register(externalProjectModule)
+            await app.register(ceApiKeyModule)
             break
     }
 

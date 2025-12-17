@@ -1,13 +1,21 @@
-import { Principal } from '@activepieces/shared'
+import { ApEdition, Principal } from '@activepieces/shared'
 import { FastifyRequest } from 'fastify'
+import { system } from '../../helper/system/system'
+import { CeApiKeyAuthnHandler } from '../../project/ce-api-key-authn-handler'
 import { AccessTokenAuthnHandler } from './authn/access-token-authn-handler'
 import { AnonymousAuthnHandler } from './authn/anonymous-authn-handler'
 import { PlatformApiKeyAuthnHandler } from './authn/platform-api-key-authn-handler'
 import { PrincipalTypeAuthzHandler } from './authz/principal-type-authz-handler'
 import { ProjectAuthzHandler } from './authz/project-authz-handler'
 
+// Use CE API key handler for Community Edition, EE handler for others
+const edition = system.getEdition()
+const apiKeyHandler = edition === ApEdition.COMMUNITY 
+    ? new CeApiKeyAuthnHandler()
+    : new PlatformApiKeyAuthnHandler()
+
 const AUTHN_HANDLERS = [
-    new PlatformApiKeyAuthnHandler(),
+    apiKeyHandler,
     new AccessTokenAuthnHandler(),
     new AnonymousAuthnHandler(),
 ]
