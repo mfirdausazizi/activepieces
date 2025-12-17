@@ -11,7 +11,9 @@
  */
 
 import {
+    ActivepiecesError,
     EndpointScope,
+    ErrorCode,
     isNil,
     PrincipalType,
     Project,
@@ -88,7 +90,13 @@ export const externalProjectController: FastifyPluginAsyncTypebox = async (app) 
         
         // Verify project belongs to the same platform
         if (project.platformId !== request.principal.platform.id) {
-            return { error: 'Project not found' }
+            throw new ActivepiecesError({
+                code: ErrorCode.ENTITY_NOT_FOUND,
+                params: {
+                    entityType: 'project',
+                    entityId: request.params.id,
+                },
+            })
         }
         
         return project
